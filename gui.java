@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
@@ -10,6 +11,9 @@ public class gui {
 		Dimension ssize = kit.getScreenSize();
 		GraphicsEnvironment genv = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		GraphicsDevice gdev = genv.getDefaultScreenDevice();
+		String[] fontnames = genv.getAvailableFontFamilyNames();
+		for(String fn:fontnames)
+			System.out.println(fn);
 		//System.out.println(gdev.getAvailableAcceleratedMemory());
 		int sres = kit.getScreenResolution();
 		System.out.println(sres);
@@ -22,7 +26,7 @@ public class gui {
 		panel.setPreferredSize(new Dimension(400,300));
 		//panel.setLocation(100,100);
 		//panel.setBounds(50,50,400,300);
-		panel.setBackground(Color.green);
+		panel.setBackground(new Color(100,200,100));
 		
 		pane.add(panel);
 		
@@ -47,6 +51,23 @@ class Sframe extends javax.swing.JFrame {
 class Spanel extends javax.swing.JPanel {
 	public void paintComponent(java.awt.Graphics g) {
 		super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D) g;
+		g.setColor(Color.cyan);
 		g.drawString("I love every girl",50,100);
+		java.awt.geom.Rectangle2D rect= new java.awt.geom.Rectangle2D.Double(70.0,70.0,100.0,130.0);
+		g2.setPaint(Color.yellow);
+		g2.fill(rect);
+		System.out.println("Bold ="+java.awt.Font.BOLD +"Italic = "+java.awt.Font.ITALIC+" "+java.awt.Font.PLAIN);
+		java.awt.Font fnt =  new java.awt.Font("Serif",3,22);
+		g2.setFont(fnt);
+		g2.setPaint(Color.RED);
+		java.awt.font.FontRenderContext context = g2.getFontRenderContext();
+		String msg = "I love every Girl";
+		
+		g2.drawString(msg,150, 200);
+		java.awt.geom.Rectangle2D frect = fnt.getStringBounds(msg,context);
+		java.awt.font.LineMetrics metrics = fnt.getLineMetrics(msg,context);
+		g2.setPaint(Color.BLACK);
+		g2.draw(new java.awt.geom.Rectangle2D.Double(150,200+frect.getY(),frect.getWidth(),frect.getHeight()));
 	}
 }
